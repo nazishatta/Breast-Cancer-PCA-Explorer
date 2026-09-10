@@ -561,6 +561,80 @@ for col in feature_names:
     pca_df[col] = features[col].values
 
 
+
+# ---------------------------------------------------------------------
+# Scree plot
+# ---------------------------------------------------------------------
+
+st.subheader("Explained Variance Across Principal Components")
+
+# Fit PCA using all available components
+pca_full = PCA()
+pca_full.fit(X_scaled)
+
+explained_variance = pca_full.explained_variance_ratio_
+cumulative_variance = np.cumsum(explained_variance)
+
+components = np.arange(1, len(explained_variance) + 1)
+
+fig_scree, ax_scree = plt.subplots(figsize=(10, 5.5))
+
+fig_scree.patch.set_facecolor("#1A1D24")
+ax_scree.set_facecolor("#1A1D24")
+
+ax_scree.plot(
+    components,
+    explained_variance * 100,
+    marker="o",
+    linewidth=1.8,
+    markersize=5,
+    label="Individual explained variance",
+)
+
+ax_scree.plot(
+    components,
+    cumulative_variance * 100,
+    marker="s",
+    linewidth=1.8,
+    markersize=4,
+    label="Cumulative explained variance",
+)
+
+ax_scree.set_xlabel("Principal Component")
+ax_scree.set_ylabel("Explained Variance (%)")
+ax_scree.set_title("Scree Plot and Cumulative Explained Variance")
+
+ax_scree.set_xticks(np.arange(1, len(components) + 1, 2))
+ax_scree.set_ylim(0, 105)
+ax_scree.grid(alpha=0.25)
+ax_scree.legend(frameon=True)
+
+fig_scree.tight_layout()
+st.pyplot(fig_scree)
+plt.close(fig_scree)
+
+st.markdown(
+    f"""
+    The scree plot shows that most of the standardized variance is concentrated
+    in the first few principal components. **PC1 explains {pc1_var:.1%}** of
+    the variance and **PC2 explains {pc2_var:.1%}**, so the first two components
+    together retain approximately **{total_var:.1%}** of the total variance.
+
+    The contribution of each additional component decreases rapidly after the
+    first few components, indicating diminishing gains from adding more dimensions.
+    The first **5 components retain approximately {cumulative_variance[4]:.1%}**,
+    the first **7 retain approximately {cumulative_variance[6]:.1%}**, and the
+    first **10 retain approximately {cumulative_variance[9]:.1%}** of the
+    standardized variance.
+
+    This pattern indicates substantial redundancy among the original 30 diagnostic
+    measurements. Although the two-dimensional PCA projection captures a large
+    share of the overall structure, additional components are required to preserve
+    most of the original information.
+    """
+)
+
+
 # ---------------------------------------------------------------------
 # Interactive PCA projection
 # ---------------------------------------------------------------------
@@ -865,5 +939,9 @@ dimensions. The PCA projection reveals substantial but incomplete diagnostic
 separation. PC1 primarily reflects **tumor size and morphological
 irregularity**, while PC2 captures a contrasting **complexity-versus-size**
 dimension.
+
+The scree analysis further shows that the first **7 principal components retain
+approximately {cumulative_variance[6]:.1%}** of the standardized variance,
+reinforcing the substantial redundancy in the original 30-feature space.
 """
 )
