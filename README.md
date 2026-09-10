@@ -1,8 +1,10 @@
-# Multivariate PCA Explorer
+# Breast Cancer PCA Explorer
 
-An interactive dimensionality-reduction and multivariate-analysis project built with **Python**, **scikit-learn**, **pandas**, **Seaborn**, **Matplotlib**, and **Streamlit**.
+An interactive dimensionality-reduction and multivariate-analysis project using **PCA**, **correlation analysis**, and **clustering** on the Wisconsin Diagnostic Breast Cancer dataset.
 
-The project explores whether 30 diagnostic measurements from the Wisconsin Diagnostic Breast Cancer dataset can be reduced to two principal components while preserving meaningful structure between malignant and benign cases.
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://breast-cancer-pca.streamlit.app/)
+
+**Live App:** [breast-cancer-pca.streamlit.app](https://breast-cancer-pca.streamlit.app/)
 
 ---
 
